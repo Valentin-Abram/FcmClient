@@ -5,7 +5,11 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FcmClient.Android", "FcmClient\FcmClient.Android\FcmClient.Android.csproj", "{FDBE9224-6ACC-49B8-85BD-31013DC2DB41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FcmClient", "FcmClient\FcmClient\FcmClient.csproj", "{A2E31BF3-3C86-45CB-AE18-E5FD749872E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FcmClient", "FcmClient\FcmClient\FcmClient.csproj", "{A2E31BF3-3C86-45CB-AE18-E5FD749872E7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiClient", "ApiClient\ApiClient.csproj", "{007563BC-6654-4AA7-8216-B1C872AF1B06}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdsAgregator.CommonModels", "..\AdsAgregator.Backend\AdsAgregator.CommonModels\AdsAgregator.CommonModels.csproj", "{08D6BD98-B291-494B-9893-35CCEFD3D269}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +29,14 @@ Global
 		{A2E31BF3-3C86-45CB-AE18-E5FD749872E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2E31BF3-3C86-45CB-AE18-E5FD749872E7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A2E31BF3-3C86-45CB-AE18-E5FD749872E7}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{007563BC-6654-4AA7-8216-B1C872AF1B06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{007563BC-6654-4AA7-8216-B1C872AF1B06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{007563BC-6654-4AA7-8216-B1C872AF1B06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{007563BC-6654-4AA7-8216-B1C872AF1B06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08D6BD98-B291-494B-9893-35CCEFD3D269}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08D6BD98-B291-494B-9893-35CCEFD3D269}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08D6BD98-B291-494B-9893-35CCEFD3D269}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08D6BD98-B291-494B-9893-35CCEFD3D269}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

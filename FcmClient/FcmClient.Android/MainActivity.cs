@@ -11,6 +11,8 @@ using Firebase.Messaging;
 using Firebase.Iid;
 using Android.Util;
 using Android.Content;
+using Xamarin.Forms;
+using FcmClient.Services;
 
 namespace FcmClient.Droid
 {
@@ -31,6 +33,9 @@ namespace FcmClient.Droid
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+
+            SubscribeForMessages();
+            
             LoadApplication(new App());
 
             if (base.Intent.Extras != null)
@@ -46,7 +51,18 @@ namespace FcmClient.Droid
 
             CreateNotificationChannel();
 
+
             Console.WriteLine($"TOKEN======================{FirebaseInstanceId.Instance.Token}");
+        }
+
+        public void SubscribeForMessages()
+        {
+            MessagingCenter.Subscribe<NotificationCenter>(this, "REFRESH_MOBILE_TOKEN_MESSAGE", RefreshMobileToken);
+        }
+
+        private void RefreshMobileToken(NotificationCenter notificationCenter)
+        {
+            notificationCenter.MobileTokenRefreshed(FirebaseInstanceId.Instance.Token);
         }
 
         protected override void OnNewIntent(Intent intent)
