@@ -1,6 +1,9 @@
-﻿using FcmClient.Pages;
+﻿using AdsAgregator.CommonModels.Enums;
+using AdsAgregator.CommonModels.Models;
+using FcmClient.Pages;
 using FcmClient.Services;
 using System;
+using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -8,6 +11,8 @@ namespace FcmClient
 {
     public partial class App : Application
     {
+        public static List<SearchItem> SearchListCache { get; set; } = new List<SearchItem>();
+
         public App()
         {
             InitializeComponent();
