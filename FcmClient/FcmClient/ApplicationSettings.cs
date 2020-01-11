@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -10,25 +11,40 @@ namespace FcmClient
 {
     public class ApplicationSettings
     {
+
+
+        private static string settingsFilePath { get; set; }
+
+        static ApplicationSettings()
+        {
+            settingsFilePath =  Path.Combine
+                (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "appsettings.json");
+
+            CreateSettingsFileIfNotExist();
+
+        }
+
+
         /// <summary>
         /// Returns user credentials, where first item value is login, second is password
         /// </summary>
         /// <returns></returns>
         public static ValueTuple<string,string> GetCredentials()
         {
-            var assembly = IntrospectionExtensions.GetTypeInfo(typeof(ApplicationSettings)).Assembly;
-            Stream stream = assembly.GetManifestResourceStream("FcmClient.appsettings.json");
+            var settings = GetApplicationSettings();
 
-            StreamReader sr = new StreamReader(stream);
-            
-            var text = sr.ReadToEnd();
+            return new ValueTuple<string, string>(settings.Credentials.Login, settings.Credentials.Password);
+        }
 
-            var jObject = JsonConvert.DeserializeObject(text) as JObject;
+        public static void SetCredentials(string userId, string login, string password, string mobileToken)
+        {
+            var settings = GetApplicationSettings();
+            settings.Credentials.UserId = userId;
+            settings.Credentials.Login = login;
+            settings.Credentials.Password = password;
+            settings.Credentials.MobileToken = mobileToken;
 
-            var login = (string) jObject["Credentials"]["Login"];
-            var password = (string)jObject["Credentials"]["Password"];
-
-            return new ValueTuple<string, string>(login, password);
+            UpdateApplicationSettings(settings);
         }
 
         /// <summary>
@@ -37,21 +53,9 @@ namespace FcmClient
         /// <returns></returns>
         public static string GetMobileToken()
         {
-            var assembly = IntrospectionExtensions.GetTypeInfo(typeof(ApplicationSettings)).Assembly;
-            Stream stream = assembly.GetManifestResourceStream("FcmClient.appsettings.json");
+            var settings = GetApplicationSettings();
 
-            //var settingsFile = Path
-            //       .Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "appsettings.json");
-
-            StreamReader sr = new StreamReader(stream);
-
-            var text = sr.ReadToEnd();
-
-            var jObject = JsonConvert.DeserializeObject(text) as JObject;
-
-            var token = (string)jObject["Credentials"]["MobileToken"];
-
-            return token;
+            return settings.Credentials.MobileToken;
         }
 
         /// <summary>
@@ -60,23 +64,90 @@ namespace FcmClient
         /// <returns></returns>
         public static void SetMobileToken(string token)
         {
-            var assembly = IntrospectionExtensions.GetTypeInfo(typeof(ApplicationSettings)).Assembly;
-            Stream stream = assembly.GetManifestResourceStream("FcmClient.appsettings.json");
 
-            StreamReader sr = new StreamReader(stream);
+            var settings = GetApplicationSettings();
 
-            var text = sr.ReadToEnd();
+            if (settings == null)
+                throw new Exception("Cannot read user settings");
 
-            var jObject = JsonConvert.DeserializeObject(text) as JObject;
+            if (settings.Credentials.MobileToken?.ToUpper() == token?.ToUpper())
+                return;
 
-            var jToken = (JToken)jObject["Credentials"]["MobileToken"];
-            jToken.Replace(token);
+            settings.Credentials.MobileToken = token ?? "";
 
-            if (File.Exists("FcmClient.appsettings.json"))
-            { 
-                string output = Newtonsoft.Json.JsonConvert.SerializeObject(jObject, Newtonsoft.Json.Formatting.Indented);
-                File.WriteAllText("FcmClient.appsettings.json", output);
+            UpdateApplicationSettings(settings);
+
+        }
+
+        public static string GetUserId()
+        {
+            var settings = GetApplicationSettings();
+            return settings.Credentials.UserId;
+        }
+        
+        private static void CreateSettingsFileIfNotExist()
+        {
+            if (!File.Exists(settingsFilePath))
+            {
+
+                var body = new ApplicationSettingsBody();
+                body.Credentials = new Credentials()
+                {
+                    Login="",
+                    Password="",
+                    MobileToken=""
+                };
+
+                string settingsFileBody = JsonConvert.SerializeObject(body);
+
+                var stream = File.Create(settingsFilePath);
+                using (var sw = new StreamWriter(stream))
+                {
+                    sw.Write(settingsFileBody);
+                }
+            }
+            
+        }
+
+        private static void UpdateApplicationSettings(ApplicationSettingsBody settings)
+        {
+            using (StreamWriter sw = new StreamWriter(settingsFilePath))
+            {
+                sw.Write(JsonConvert.SerializeObject(settings));
             }
         }
+
+
+        private static ApplicationSettingsBody GetApplicationSettings()
+        {
+            ApplicationSettingsBody settings = null;
+
+            try
+            {
+                using (StreamReader sr = new StreamReader(settingsFilePath))
+                {
+                    settings = JsonConvert.DeserializeObject<ApplicationSettingsBody>(sr.ReadToEnd());
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+            return settings;
+        }
+    }
+
+    class ApplicationSettingsBody
+    {
+        public Credentials Credentials { get; set; }
+    }
+
+    class Credentials
+    {
+        public string UserId { get; set; }
+        public string Login { get; set; }
+        public string Password { get; set; }
+        public string MobileToken { get; set; }
     }
 }

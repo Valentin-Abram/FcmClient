@@ -3,14 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:FcmClient.ViewModels"
              mc:Ignorable="d"
              x:Class="FcmClient.Pages.CreateSearchPage">
+    <ContentPage.BindingContext>
+        <vm:CreateSearchViewModel/>
+    </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
-            <Entry Placeholder="Назва"/>
-            <Entry Placeholder="Опис"/>
-            <Entry Placeholder="Url адрес сторінки"/>
-            <Button Text="Зберегти"/>
+            <Entry Placeholder="Назва" Text="{Binding Title}"/>
+            <Entry Placeholder="Опис" Text="{Binding Description}"/>
+            <Entry Placeholder="Url адрес сторінки" Text="{Binding Url}"/>
+            <Button Text="Зберегти" Command="{Binding SaveCommand}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

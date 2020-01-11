@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdsAgregator.CommonModels.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
@@ -7,6 +8,10 @@ namespace FcmClient.Services
 {
     public class NotificationCenter
     {
+        public void NewAdsArrived(List<AdModel> ads)
+        {
+            MessagingCenter.Send(this, "NEW_ADS_ARRIVED_MESSAGE", ads);
+        }
         public void RequestMobileTokenRefresh()
         { 
             MessagingCenter.Send(this, "REFRESH_MOBILE_TOKEN_MESSAGE");

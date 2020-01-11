@@ -113,19 +113,40 @@ namespace ApiClient
         }
 
 
-        public async Task<ValueTuple<bool,string>> SignInUser(string username, string password, string mobileToken)
+        public async Task<ValueTuple<bool,string>> SignInUser(string username, string password)
         {
 
             var httpClient = new HttpClient();
 
+            var url = $"{_endpoint}user/signin?username={username}&password={password}";
+
             var response = await httpClient
-                .GetAsync($"{_endpoint}user/signin?username={username}&&password={password}&&mobileToken={mobileToken}");
+                .GetAsync(url);
 
             bool signInResult = response.StatusCode == HttpStatusCode.OK;
 
             var content = await response.Content.ReadAsStringAsync();
 
             return new ValueTuple<bool, string>(signInResult, content);
+
+        }
+
+
+        public async Task<ValueTuple<bool, string>> SetMobileToken(string userId, string mobileToken)
+        {
+
+            var httpClient = new HttpClient();
+
+            var url = $"{_endpoint}user/SetMobileToken?userId={userId}&mobileToken={mobileToken}";
+
+            var response = await httpClient
+                .GetAsync(url);
+
+            bool result = response.StatusCode == HttpStatusCode.OK;
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            return new ValueTuple<bool, string>(result, content);
 
         }
 

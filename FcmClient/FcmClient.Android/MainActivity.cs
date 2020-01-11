@@ -35,7 +35,13 @@ namespace FcmClient.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
             SubscribeForMessages();
-            
+
+            IsPlayServicesAvailable();
+
+            CreateNotificationChannel();
+
+            GetMobileToken(new NotificationCenter());
+
             LoadApplication(new App());
 
             if (base.Intent.Extras != null)
@@ -47,20 +53,16 @@ namespace FcmClient.Droid
                 }
             }
 
-            IsPlayServicesAvailable();
-
-            CreateNotificationChannel();
-
 
             Console.WriteLine($"TOKEN======================{FirebaseInstanceId.Instance.Token}");
         }
 
         public void SubscribeForMessages()
         {
-            MessagingCenter.Subscribe<NotificationCenter>(this, "REFRESH_MOBILE_TOKEN_MESSAGE", RefreshMobileToken);
+            MessagingCenter.Subscribe<NotificationCenter>(this, "REFRESH_MOBILE_TOKEN_MESSAGE", GetMobileToken);
         }
 
-        private void RefreshMobileToken(NotificationCenter notificationCenter)
+        private void GetMobileToken(NotificationCenter notificationCenter)
         {
             notificationCenter.MobileTokenRefreshed(FirebaseInstanceId.Instance.Token);
         }

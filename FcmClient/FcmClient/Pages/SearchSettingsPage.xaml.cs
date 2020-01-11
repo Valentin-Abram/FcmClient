@@ -16,5 +16,10 @@ namespace FcmClient.Pages
         {
             InitializeComponent();
         }
+
+        private async void ToolbarItem_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushModalAsync(new NavigationPage(new CreateSearchPage()));
+        }
     }
 }

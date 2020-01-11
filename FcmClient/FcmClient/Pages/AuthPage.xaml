@@ -14,8 +14,8 @@
 
     <ContentPage.Content>
         <StackLayout VerticalOptions="EndAndExpand">
-            <Entry Placeholder="логін"/>
-            <Entry Placeholder="пароль"/>
+            <Entry Placeholder="логін" Text="{Binding Login}"/>
+            <Entry Placeholder="пароль" Text="{Binding Password}"/> 
             <Button Text="Увійти" Command="{Binding SignInCommand}"/>
         </StackLayout>
     </ContentPage.Content>

@@ -43,7 +43,7 @@ namespace FcmClient
         {
             MessagingCenter.Subscribe<NotificationCenter, string>(this, "MOBILE_TOKEN_REFRESHED_MESSAGE", SetMobileToken);
             MessagingCenter.Subscribe<NotificationCenter, string>(this, "SET_MOBILE_TOKEN_MESSAGE", SetMobileToken);
-            MessagingCenter.Subscribe<NotificationCenter, Page>(this, "SET_MOBILE_TOKEN_MESSAGE", SetMainPage);
+            MessagingCenter.Subscribe<NotificationCenter, Page>(this, "CHANGE_MAIN_PAGE", SetMainPage);
         }
 
         private void SetMainPage(NotificationCenter arg1, Page arg2)
@@ -51,8 +51,16 @@ namespace FcmClient
             MainPage = arg2;
         }
 
-        private void SetMobileToken(NotificationCenter arg1, string token)
+        private async void SetMobileToken(NotificationCenter arg1, string token)
         {
+
+            var credentials = ApplicationSettings.GetCredentials();
+            var apiClient = new ApiClient.ApiClient();
+
+            if (string.IsNullOrWhiteSpace(token))
+                return;
+
+            await  apiClient.SetMobileToken(credentials.Item1, credentials.Item2);
             ApplicationSettings.SetMobileToken(token);
         }
 

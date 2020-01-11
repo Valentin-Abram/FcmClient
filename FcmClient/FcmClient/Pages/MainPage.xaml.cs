@@ -1,4 +1,5 @@
 ﻿using ApiClient;
+using FcmClient.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,6 +24,8 @@ namespace FcmClient.Pages
         {
             base.OnAppearing();
             await GetDataFromServer();
+
+            new NotificationCenter().RequestMobileTokenRefresh();
         }
 
         private async Task GetDataFromServer()

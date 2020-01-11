@@ -1,9 +1,12 @@
-﻿using System;
+﻿using AdsAgregator.CommonModels.Models;
+using FcmClient.Services;
+using FcmClient.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,6 +18,23 @@ namespace FcmClient.Pages
         public SearchResultsPage()
         {
             InitializeComponent();
+            SubscribeForMessages();
         }
+
+        private void SubscribeForMessages()
+        {
+            MessagingCenter.Subscribe<SearchResultsViewModel, string>(this, "VISIT_AD_MESSAGE", VisitAd);
+        }
+
+        private async void VisitAd(SearchResultsViewModel sender, string link)
+        {
+            var url = link.Replace(" ", "");
+
+            await Launcher.OpenAsync(new Uri(url, true));
+        }
+
+
+
+
     }
 }

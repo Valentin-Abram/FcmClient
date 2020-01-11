@@ -1,4 +1,6 @@
 ﻿using FcmClient.Services;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +18,7 @@ namespace FcmClient.Pages
         public AuthPage()
         {
             InitializeComponent();
+            SubscribeForMessages();
         }
 
         public void SubscribeForMessages()
@@ -26,8 +29,20 @@ namespace FcmClient.Pages
         private void OnSigninResultCallback(NotificationCenter obj, ValueTuple<bool, string> payload)
         {
             if (payload.Item1 == true)
-            { 
-                
+            {
+                var jObject = (JObject)JsonConvert.DeserializeObject(payload.Item2);
+
+                var login = jObject.Property("userName")?.Value?.ToString();
+                var password = jObject.Property("password")?.Value?.ToString();
+                var token = jObject.Property("mobileAppToken")?.Value?.ToString();
+                var userId = jObject.Property("id")?.Value?.ToString();
+                ApplicationSettings.SetCredentials(userId,login, password, token);
+
+                obj.ChangeMainPage(new MainPage());
+            }
+            else
+            {
+                DisplayAlert("", "Логін або пароль невірні", "ок");
             }
         }
     }

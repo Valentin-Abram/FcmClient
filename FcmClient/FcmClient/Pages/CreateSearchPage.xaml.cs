@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FcmClient.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,16 @@ namespace FcmClient.Pages
         public CreateSearchPage()
         {
             InitializeComponent();
+
+            MessagingCenter.Subscribe<CreateSearchViewModel, bool>(this, "SEARCH_CREATION_RESULT", SearchCreationResultCallback);
+        }
+
+        private async void SearchCreationResultCallback(CreateSearchViewModel arg1, bool result)
+        {
+            if (result == true)
+                await Navigation.PopModalAsync();
+            else
+                DisplayAlert("", "Невдалось створити пошук", "ок");
         }
     }
 }

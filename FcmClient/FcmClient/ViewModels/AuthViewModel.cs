@@ -1,6 +1,8 @@
-﻿using FcmClient.Services;
+﻿using AdsAgregator.CommonModels.Models;
+using FcmClient.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -10,7 +12,7 @@ using Xamarin.Forms;
 
 namespace FcmClient.ViewModels
 {
-    class AuthViewModel: INotifyPropertyChanged
+    public class AuthViewModel: INotifyPropertyChanged
     {
         private string _login;
         public string Login 
@@ -46,6 +48,9 @@ namespace FcmClient.ViewModels
         public AuthViewModel()
         {
             RegisterCommands();
+
+            Login = "Valentin";
+            Password = "boss";
         }
 
         public void RegisterCommands()
@@ -53,9 +58,13 @@ namespace FcmClient.ViewModels
             SignInCommand = new Command(SignInCallback, CanSignIn);
         }
 
+
+
+       
+
         private bool CanSignIn(object arg)
         {
-            return !string.IsNullOrEmpty(Login) && !string.IsNullOrEmpty(Password);
+            return true;
         }
 
         private async void SignInCallback(object obj)
@@ -65,10 +74,8 @@ namespace FcmClient.ViewModels
 
         private async Task SignIn()
         {
-            var token = ApplicationSettings.GetMobileToken();
-
             var client = new ApiClient.ApiClient();
-            var signInResult = await client.SignInUser(Login, Password, token);
+            var signInResult = await client.SignInUser(Login, Password);
 
 
             new NotificationCenter().SendSinginResult(signInResult.Item1, signInResult.Item2);

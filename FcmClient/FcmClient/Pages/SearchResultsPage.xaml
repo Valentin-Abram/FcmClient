@@ -3,8 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:FcmClient.ViewModels"
              mc:Ignorable="d"
+             x:Name="SearchResults"
              x:Class="FcmClient.Pages.SearchResultsPage">
+
+    <ContentPage.BindingContext>
+        <vm:SearchResultsViewModel/>
+    </ContentPage.BindingContext>
+
+
     <ContentPage.Content>
         <StackLayout>
             <ListView
@@ -12,11 +20,32 @@
             HasUnevenRows="True"
             HeightRequest="100"
             SeparatorColor="Gray"
+            ItemsSource="{Binding Ads}"
             SeparatorVisibility="Default">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding AdTitle}" Grid.Row="0" Grid.Column="0"/>
+                                <Label Text="{Binding CarInfo}" Grid.Row="1" Grid.Column="0"/>
+                                <Button Text="Відвідати" Grid.Row="0" Grid.Column="1"  FontSize="8"
+                                    TextColor="Blue" 
+                                    Command="{Binding Source={x:Reference SearchResults}, Path=BindingContext.VisitAdCommand}"
+                                    CommandParameter="{Binding AdLink}"/>
+                                <StackLayout Grid.Row="1" Grid.Column="1">
+                                    <Label Text="{Binding PriceInfo}"/>
+                                    <Label Text="{Binding AddressInfo}"/>
+                                    <Label Text="{Binding AdSource}"/>
+                                </StackLayout>
+                            </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

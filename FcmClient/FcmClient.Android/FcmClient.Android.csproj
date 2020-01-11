@@ -102,6 +102,10 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\AdsAgregator.Backend\AdsAgregator.CommonModels\AdsAgregator.CommonModels.csproj">
+      <Project>{08D6BD98-B291-494B-9893-35CCEFD3D269}</Project>
+      <Name>AdsAgregator.CommonModels</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FcmClient\FcmClient.csproj">
       <Project>{F7B36092-8A7C-4386-8A92-550AEFD543F9}</Project>
       <Name>FcmClient</Name>
