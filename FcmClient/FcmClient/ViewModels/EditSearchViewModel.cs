@@ -12,11 +12,13 @@ using Xamarin.Forms;
 
 namespace FcmClient.ViewModels
 {
-    class CreateSearchViewModel: INotifyPropertyChanged
+    class EditSearchViewModel: INotifyPropertyChanged
     {
+        private SearchItem _searchItem;
+
         private string _title;
         public string Title { get { return _title; } set { _title = value; NotifyPropertyChanged(); } }
-        
+
         private string _description;
         public string Description { get { return _description; } set { _description = value; NotifyPropertyChanged(); } }
 
@@ -25,18 +27,28 @@ namespace FcmClient.ViewModels
 
         public ICommand SaveCommand { get; set; }
 
-        public CreateSearchViewModel()
+        public EditSearchViewModel()
         {
             SaveCommand = new Command(SaveSearch);
         }
 
+        public EditSearchViewModel SetEditingItem(SearchItem searchItem)
+        {
+            this._searchItem = searchItem;
+
+            Title = this._searchItem.Title;
+            Description = this._searchItem.Description;
+            Url = this._searchItem.Url;
+
+            return this;
+        }
+
         private async void SaveSearch(object obj)
         {
-            
 
             var apiClient = new ApiClient.ApiClient();
             var result = await apiClient
-                .CreateSearch(Title, Description, Url, default(bool), (int) AdSource.Ebay, ApplicationSettings.GetUserId() );
+                .UpdateSearch(_searchItem.Id.ToString(), Title, Description, Url, _searchItem.IsActive, (int)AdSource.Ebay, ApplicationSettings.GetUserId());
 
             try
             {
@@ -44,13 +56,13 @@ namespace FcmClient.ViewModels
 
                 if (searchItem?.Id > 0)
                 {
-                    MessagingCenter.Send<CreateSearchViewModel, bool>(this, "SEARCH_CREATION_RESULT", true);
-                    InternalCache.AddSearchItem(searchItem);
+                    MessagingCenter.Send<EditSearchViewModel, bool>(this, "SEARCH_EDIT_RESULT", true);
+                    InternalCache.UpdateSearchItem(searchItem);
                 }
             }
             catch (Exception ex)
             {
-                MessagingCenter.Send<CreateSearchViewModel, bool>(this, "SEARCH_CREATION_RESULT", false);
+                MessagingCenter.Send<EditSearchViewModel, bool>(this, "SEARCH_EDIT_RESULT", false);
             }
 
         }

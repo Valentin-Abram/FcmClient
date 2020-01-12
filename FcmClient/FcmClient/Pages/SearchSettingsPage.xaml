@@ -4,6 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             x:Name="SearchSettingsPageName"
              x:Class="FcmClient.Pages.SearchSettingsPage">
 
     <ContentPage.ToolbarItems>
@@ -23,6 +24,16 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem
+                                Command="{Binding Path=BindingContext.EditCommand, Source={x:Reference SearchSettingsPageName}}"
+                                CommandParameter="{Binding .}"
+                                Text="Edit" />
+                                <MenuItem
+                                Command="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference SearchSettingsPageName}}"
+                                CommandParameter="{Binding .}"
+                                Text="Delete" />
+                            </ViewCell.ContextActions>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
