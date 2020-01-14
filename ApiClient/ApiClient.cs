@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AdsAgregator.CommonModels.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,14 +18,40 @@ namespace ApiClient
             this._endpoint = @"https://adsagregatorbackend.azurewebsites.net/api/";
         }
 
-        public async Task<string> GetSearches(string userId)
+        public async Task<List<AdModel>> GetAds(int userId, int adIdFrom)
+        {
+            var httpClient = new HttpClient();
+
+            var response = await httpClient
+                .GetAsync($"{_endpoint}Ads/GetAds?userId={userId}&adIdFrom={adIdFrom}");
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            if (string.IsNullOrWhiteSpace(content))
+                return null;
+
+            var searchList = JsonConvert
+                .DeserializeObject<List<AdModel>>(content);
+
+            return searchList;
+        }
+
+        public async Task<List<SearchItem>> GetSearches(string userId)
         {
             var httpClient = new HttpClient();
 
             var response = await httpClient
                 .GetAsync($"{_endpoint}searchitems/get?userId={userId}");
 
-            return await response.Content.ReadAsStringAsync();
+            var content = await response.Content.ReadAsStringAsync();
+
+            if (string.IsNullOrWhiteSpace(content))
+                return null;
+
+            var searchList = JsonConvert
+                .DeserializeObject<List<SearchItem>>(content);
+
+            return searchList;
         }
 
         public async Task<string> CreateSearch(string title, string description, string url, bool isActive, int adSource, string userId)
@@ -85,7 +112,7 @@ namespace ApiClient
 
 
         // TODO : test api call       
-        public async Task<string> DeleteSearch(string userId, string itemId)
+        public async Task<HttpStatusCode> DeleteSearch(string userId, string itemId)
         {
             var httpClient = new HttpClient();
             var parameters = new Dictionary<string, string>()
@@ -98,7 +125,7 @@ namespace ApiClient
 
             var response = await httpClient.PostAsync($"{_endpoint}/searchitems/delete", encodedContent);
 
-            return await response.Content.ReadAsStringAsync();
+            return response.StatusCode;
 
         }
         public async Task<string> RegisterUser(string username, string password, string mobileToken)
@@ -113,12 +140,12 @@ namespace ApiClient
         }
 
 
-        public async Task<ValueTuple<bool,string>> SignInUser(string username, string password)
+        public async Task<ValueTuple<bool,string>> SignInUser(string username, string password, string mobileToken)
         {
 
             var httpClient = new HttpClient();
 
-            var url = $"{_endpoint}user/signin?username={username}&password={password}";
+            var url = $"{_endpoint}user/signin?username={username}&password={password}&mobileToken={mobileToken}";
 
             var response = await httpClient
                 .GetAsync(url);

@@ -31,22 +31,23 @@ namespace FcmClient.Droid
             Log.Debug(TAG, "From: " + message.From);
             Log.Debug(TAG, "Notification Message Body: " + message.GetNotification().Body);
 
-            if (!string.IsNullOrWhiteSpace(data))
-            {
-                var adList = new List<AdModel>();
+            new NotificationCenter().NewAdsArrived();
 
-                try
-                {
-                    adList = JsonConvert.DeserializeObject<List<AdModel>>(data);
-                    new NotificationCenter().NewAdsArrived(adList);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
+            //if (!string.IsNullOrWhiteSpace(data))
+            //{
+            //    var adList = new List<AdModel>();
 
-                
-            }
+            //    try
+            //    {
+            //        adList = JsonConvert.DeserializeObject<List<AdModel>>(data);
+            //        new NotificationCenter().NewAdsArrived(adList);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Console.WriteLine(ex.Message);
+            //    }
+
+            //}
 
 
         }

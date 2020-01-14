@@ -12,6 +12,8 @@ namespace FcmClient
     public partial class App : Application
     {
         public static List<SearchItem> SearchListCache { get; set; } = new List<SearchItem>();
+        public static List<AdModel> AdsListCache { get; set; } = new List<AdModel>();
+
 
         public App()
         {
@@ -47,7 +49,7 @@ namespace FcmClient
         public void SubscribeForMessages()
         {
             MessagingCenter.Subscribe<NotificationCenter, string>(this, "MOBILE_TOKEN_REFRESHED_MESSAGE", SetMobileToken);
-            MessagingCenter.Subscribe<NotificationCenter, string>(this, "SET_MOBILE_TOKEN_MESSAGE", SetMobileToken);
+            //MessagingCenter.Subscribe<NotificationCenter, string>(this, "SET_MOBILE_TOKEN_MESSAGE", SetMobileToken);
             MessagingCenter.Subscribe<NotificationCenter, Page>(this, "CHANGE_MAIN_PAGE", SetMainPage);
         }
 
@@ -58,15 +60,20 @@ namespace FcmClient
 
         private async void SetMobileToken(NotificationCenter arg1, string token)
         {
+            ApplicationSettings.SetMobileToken(token);
 
-            var credentials = ApplicationSettings.GetCredentials();
+            var userId = ApplicationSettings.GetUserId();
+
+            // if user not signed in yet
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return;
+            }
+
             var apiClient = new ApiClient.ApiClient();
 
-            if (string.IsNullOrWhiteSpace(token))
-                return;
-
-            await  apiClient.SetMobileToken(credentials.Item1, credentials.Item2);
-            ApplicationSettings.SetMobileToken(token);
+            await  apiClient.SetMobileToken(userId, token);
+            
         }
 
         private bool IsAuthentificated()

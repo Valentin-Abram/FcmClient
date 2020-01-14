@@ -75,7 +75,8 @@ namespace FcmClient.ViewModels
         private async Task SignIn()
         {
             var client = new ApiClient.ApiClient();
-            var signInResult = await client.SignInUser(Login, Password);
+            var token = ApplicationSettings.GetMobileToken();
+            var signInResult = await client.SignInUser(Login, Password, token);
 
 
             new NotificationCenter().SendSinginResult(signInResult.Item1, signInResult.Item2);

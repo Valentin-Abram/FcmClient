@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using FcmClient.Services;
 using Firebase.Iid;
 
 namespace FcmClient.Droid
@@ -22,6 +23,10 @@ namespace FcmClient.Droid
         public override void OnTokenRefresh()
         {
             var refreshedToken = FirebaseInstanceId.Instance.Token;
+
+            new NotificationCenter()
+                   .MobileTokenRefreshed(refreshedToken);
+
             Log.Debug(TAG, "Refreshed token: " + refreshedToken);
             SendRegistrationToServer(refreshedToken);
         }

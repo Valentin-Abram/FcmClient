@@ -21,6 +21,14 @@ namespace FcmClient.Pages
             SubscribeForMessages();
         }
 
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            new NotificationCenter().NewAdsArrived();
+
+        }
+
         private void SubscribeForMessages()
         {
             MessagingCenter.Subscribe<SearchResultsViewModel, string>(this, "VISIT_AD_MESSAGE", VisitAd);

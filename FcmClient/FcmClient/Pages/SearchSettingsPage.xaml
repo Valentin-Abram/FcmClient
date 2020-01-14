@@ -4,8 +4,13 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             xmlns:vm="clr-namespace:FcmClient.ViewModels"
              x:Name="SearchSettingsPageName"
              x:Class="FcmClient.Pages.SearchSettingsPage">
+
+    <ContentPage.BindingContext>
+        <vm:SearchSettingsViewModel/>
+    </ContentPage.BindingContext>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Додати" Clicked="ToolbarItem_Clicked"  />
@@ -43,7 +48,7 @@
                                     <Label Text="{Binding Title}"/>
                                     <Label Text="{Binding Description}"/>
                                 </StackLayout>
-                                <Switch IsEnabled="{Binding IsActive}" Grid.Column="1"/>
+                                <Switch IsToggled="{Binding IsActive}" Grid.Column="1"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

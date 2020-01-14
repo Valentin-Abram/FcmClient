@@ -32,8 +32,6 @@ namespace FcmClient.ViewModels
 
         private async void SaveSearch(object obj)
         {
-            
-
             var apiClient = new ApiClient.ApiClient();
             var result = await apiClient
                 .CreateSearch(Title, Description, Url, default(bool), (int) AdSource.Ebay, ApplicationSettings.GetUserId() );

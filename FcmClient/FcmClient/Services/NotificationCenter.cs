@@ -8,9 +8,9 @@ namespace FcmClient.Services
 {
     public class NotificationCenter
     {
-        public void NewAdsArrived(List<AdModel> ads)
+        public void NewAdsArrived()
         {
-            MessagingCenter.Send(this, "NEW_ADS_ARRIVED_MESSAGE", ads);
+            MessagingCenter.Send(this, "NEW_ADS_ARRIVED_MESSAGE");
         }
         public void RequestMobileTokenRefresh()
         { 
@@ -20,10 +20,10 @@ namespace FcmClient.Services
         { 
             MessagingCenter.Send(this, "MOBILE_TOKEN_REFRESHED_MESSAGE", token);
         }
-        public void SetMobileToken(string token)
-        {
-            MessagingCenter.Send(this, "SET_MOBILE_TOKEN_MESSAGE", token);
-        }
+        //public void SetMobileToken(string token)
+        //{
+        //    MessagingCenter.Send(this, "SET_MOBILE_TOKEN_MESSAGE", token);
+        //}
         public void SendSinginResult(bool isSucceeded, string payload)
         { 
             MessagingCenter.Send(this, "SIGNIN_RESULT_MESSAGE", new ValueTuple<bool,string>(isSucceeded, payload));

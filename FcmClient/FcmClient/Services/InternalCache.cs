@@ -8,9 +8,18 @@ namespace FcmClient.Services
 {
     public static class InternalCache
     {
+        private const int AD_LIST_CACHE_SIZE = 100;
         public static List<SearchItem> GetSearchList()
         {
             return App.SearchListCache;
+        }
+
+        public static void InsertAd(int index, AdModel ad)
+        {
+            if (App.AdsListCache.Count >= AD_LIST_CACHE_SIZE)
+                App.AdsListCache.RemoveAt(AD_LIST_CACHE_SIZE - 1);
+
+            App.AdsListCache.Insert(index, ad);
         }
 
         public static void AddSearchItem(SearchItem searchItem)

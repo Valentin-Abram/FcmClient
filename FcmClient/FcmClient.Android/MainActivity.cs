@@ -34,38 +34,43 @@ namespace FcmClient.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
-            SubscribeForMessages();
 
             IsPlayServicesAvailable();
 
             CreateNotificationChannel();
 
-            GetMobileToken(new NotificationCenter());
 
             LoadApplication(new App());
 
+            InspectExtras();
+
+        }
+
+        private void InspectExtras()
+        {
             if (base.Intent.Extras != null)
             {
                 foreach (var key in base.Intent.Extras.KeySet())
                 {
                     var value = base.Intent.Extras.GetString(key);
-                    Log.Debug(TAG, "Key: {0} Value: {1}", key, value);
+
+                    if (value == "new ads")
+                    {
+                        new NotificationCenter().NewAdsArrived();
+                    }
+
                 }
             }
-
-
-            Console.WriteLine($"TOKEN======================{FirebaseInstanceId.Instance.Token}");
         }
 
-        public void SubscribeForMessages()
+
+
+        private string GetMobileToken()
         {
-            MessagingCenter.Subscribe<NotificationCenter>(this, "REFRESH_MOBILE_TOKEN_MESSAGE", GetMobileToken);
+            return FirebaseInstanceId.Instance.Token;
         }
 
-        private void GetMobileToken(NotificationCenter notificationCenter)
-        {
-            notificationCenter.MobileTokenRefreshed(FirebaseInstanceId.Instance.Token);
-        }
+
 
         protected override void OnNewIntent(Intent intent)
         {
