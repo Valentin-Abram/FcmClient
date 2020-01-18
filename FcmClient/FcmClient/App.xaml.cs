@@ -21,10 +21,7 @@ namespace FcmClient
 
             SubscribeForMessages();
 
-            var token = ApplicationSettings.GetMobileToken();
-
-            if (string.IsNullOrWhiteSpace(token))
-                new NotificationCenter().RequestMobileTokenRefresh();
+          
 
             if (IsAuthentificated() == true)
                 MainPage = new MainPage();

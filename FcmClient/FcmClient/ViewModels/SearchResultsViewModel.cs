@@ -48,7 +48,6 @@ namespace FcmClient.ViewModels
         {
             int adIdFrom = 0;
 
-
             if (Ads?.Count > 0)
                 adIdFrom = Ads.Max(ad => ad.Id);
 

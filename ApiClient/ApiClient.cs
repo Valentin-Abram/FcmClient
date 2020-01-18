@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -30,8 +31,17 @@ namespace ApiClient
             if (string.IsNullOrWhiteSpace(content))
                 return null;
 
-            var searchList = JsonConvert
-                .DeserializeObject<List<AdModel>>(content);
+            var searchList = new List<AdModel>();
+
+            try
+            {
+                searchList = JsonConvert
+                    .DeserializeObject<List<AdModel>>(content);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
 
             return searchList;
         }
