@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FcmClient
 {
@@ -118,7 +119,7 @@ namespace FcmClient
         }
 
 
-        private static ApplicationSettingsBody GetApplicationSettings()
+        private  static ApplicationSettingsBody GetApplicationSettings()
         {
             ApplicationSettingsBody settings = null;
 
@@ -126,7 +127,8 @@ namespace FcmClient
             {
                 using (StreamReader sr = new StreamReader(settingsFilePath))
                 {
-                    settings = JsonConvert.DeserializeObject<ApplicationSettingsBody>(sr.ReadToEnd());
+                    var text =  sr.ReadToEnd();
+                    settings = JsonConvert.DeserializeObject<ApplicationSettingsBody>(text);
                 }
             }
             catch (Exception ex)

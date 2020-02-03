@@ -23,6 +23,7 @@ namespace FcmClient.ViewModels
         {
             SubscribeForMessages();
             InitCommands();
+            FillAdList();
         }
 
         public ICommand VisitAdCommand { get; set; }
@@ -42,6 +43,16 @@ namespace FcmClient.ViewModels
             var adLink = data as string;
 
             MessagingCenter.Send(this, "VISIT_AD_MESSAGE", adLink);
+        }
+
+        private void FillAdList()
+        {
+            this.Ads.Clear();
+
+            foreach (var item in InternalCache.GetAds())
+            {
+                this.Ads.Add(item);
+            }
         }
 
         private async void OnNewAdsArrived(NotificationCenter arg1)

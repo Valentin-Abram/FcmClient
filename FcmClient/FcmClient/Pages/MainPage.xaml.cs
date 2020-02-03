@@ -19,26 +19,5 @@ namespace FcmClient.Pages
         {
             InitializeComponent();
         }
-
-        protected override async void OnAppearing()
-        {
-            base.OnAppearing();
-            await GetDataFromServer();
-
-            new NotificationCenter().RequestMobileTokenRefresh();
-        }
-
-        private async Task GetDataFromServer()
-        {
-            //var client = new ApiClient.ApiClient();
-
-            //var data = await client.GetSearches("2");
-
-            //var newlyCreated = await client.UpdateSearch("3", "test title (edited)", "test description (edited)", "some fake url (edited)", false, 1, "2");
-
-            //Created.Text = newlyCreated;
-
-            //Message.Text = data;
-        }
     }
 }

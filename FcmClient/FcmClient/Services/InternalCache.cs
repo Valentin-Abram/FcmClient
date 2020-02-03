@@ -14,6 +14,11 @@ namespace FcmClient.Services
             return App.SearchListCache;
         }
 
+        public static List<AdModel> GetAds()
+        {
+            return App.AdsListCache;
+        }
+
         public static void InsertAd(int index, AdModel ad)
         {
             if (App.AdsListCache.Count >= AD_LIST_CACHE_SIZE)

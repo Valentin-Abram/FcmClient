@@ -29,7 +29,7 @@ namespace ApiClient
             var content = await response.Content.ReadAsStringAsync();
 
             if (string.IsNullOrWhiteSpace(content))
-                return null;
+                return new List<AdModel>();
 
             var searchList = new List<AdModel>();
 
