@@ -16,7 +16,7 @@ namespace ApiClient
 
         public ApiClient()
         {
-            this._endpoint = @"https://adsagregatorbackend.azurewebsites.net/api/";
+            this._endpoint = @"https://adsagregator2020.azurewebsites.net/api/";
         }
 
         public async Task<List<AdModel>> GetAds(int userId, int adIdFrom)
