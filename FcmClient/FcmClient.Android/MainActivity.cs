@@ -38,7 +38,8 @@ namespace FcmClient.Droid
             IsPlayServicesAvailable();
 
             CreateNotificationChannel();
-
+            
+            GetMobileToken();
 
             LoadApplication(new App());
 
